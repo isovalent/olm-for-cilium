@@ -65,5 +65,6 @@ jobs:
         run: |
           preflight check container \
           --pyxis-api-token=${{ secrets.RHCP_PREFLIGHT_API_KEY }} \
+          -d ~/.docker/config.json \
           --certification-project-id=5fbe31ec8b7d4976604cbde0 \
           quay.io/isovalent-dev/cilium-olm-ci:${{ env.VERSION }}-${{ github.event.pull_request.head.sha }}
