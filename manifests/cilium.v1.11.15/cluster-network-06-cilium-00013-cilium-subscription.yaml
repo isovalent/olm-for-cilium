@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cilium
+  namespace: cilium
+spec:
+  channel: "1.11"
+  installPlanApproval: Manual
+  name: cilium
+  source: certified-operators
+  sourceNamespace: openshift-marketplace
+  startingCSV: cilium.v1.11.15-x90accf2
