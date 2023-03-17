@@ -57,7 +57,7 @@ jobs:
           tags: quay.io/isovalent-dev/cilium-olm-ci:${{ env.VERSION }}-${{ github.event.pull_request.head.sha }}
       - name: Install Preflight
         run: |
-          curl https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64 -o preflight-linux-amd64
+          curl -L -o preflight-linux-amd64 https://github.com/redhat-openshift-ecosystem/openshift-preflight/releases/download/${{ env.PREFLIGHT_VERSION }}/preflight-linux-amd64
           sha256sum --check .github_workflow_assets/preflight-linux-amd64.sha256sum
           sudo chmod +x preflight-linux-amd64
           sudo mv preflight-linux-amd64 /usr/local/bin/preflight
