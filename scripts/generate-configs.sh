@@ -63,10 +63,15 @@ nodeinit_image="$(get_image "$(yq e '.nodeinit.image.repository' "$values_file")
 clustermesh_etcd_image="$(get_image "$(yq e '.clustermesh.apiserver.etcd.image.repository' "$values_file")" "$(yq e '.clustermesh.apiserver.etcd.image.tag' "$values_file")")"
 
 cilium_major_minor="$(echo "${cilium_version}" | cut -d . -f -2)"
+# to not make 1.13.0 as previous release cause failure
+set +o pipefail
+set +o errexit
 #shellcheck disable=SC2003
 previous_version="${cilium_major_minor}.$(expr "$(echo "${cilium_version}" | cut -d . -f 3)" - 1)"
 #shellcheck disable=SC2003
 previous_version="${cilium_major_minor}.$(expr "$(echo "${cilium_version}" | cut -d . -f 3)" - 1)"
+set -o pipefail
+set -o errexit
 if [[ -d "bundles/cilium.v${previous_version}" ]]; then
     previous_name="$(yq .metadata.name "bundles/cilium.v${previous_version}/manifests/cilium.clusterserviceversion.yaml")"
 fi
