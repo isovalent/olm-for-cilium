@@ -187,5 +187,5 @@ EOF
 # using yq later on these files doesn't produce unnecessary diffs.
 #
 # Ref: https://github.com/mikefarah/yq/issues/825
-find "bundles/cilium.v${cilium_version}" -name "*.yaml" -exec sh -c 'yq e -i "$1"' sh {} \;
-find "manifests/cilium.v${cilium_version}" -name "*.yaml" -exec sh -c 'yq e -i "$1"' sh {} \;
+find "bundles/cilium.v${cilium_version}" -name "*.yaml" | while read -r file; do yq e -i "$file"; done
+find "manifests/cilium.v${cilium_version}" -name "*.yaml" | while read -r file; do yq e -i "$file"; done
