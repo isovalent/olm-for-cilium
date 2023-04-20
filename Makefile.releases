@@ -403,3 +403,12 @@ generate.configs.all: generate.configs.v1.11.16
 
 images.operator.v1.11.16 generate.configs.v1.11.16: cilium_version=1.11.16
 
+
+# Cilium v1.12.9
+
+images.all: images.operator.v1.12.9
+
+images.operator.all: images.operator.v1.12.9 generate.configs.v1.12.9
+generate.configs.all: generate.configs.v1.12.9
+
+images.operator.v1.12.9 generate.configs.v1.12.9: cilium_version=1.12.9
