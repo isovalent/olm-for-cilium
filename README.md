@@ -1,5 +1,8 @@
 # Cilium OLM
 
+> **Note**
+> This repository is a fork of the original repository hosted at [cilium/cilium-olm](https://github.com/cilium/cilium-olm), which has been deprecated.
+
 > NOTE: this documentation is for Cilium maintainers, the user guide for OpenShift is part of [Cilium documentation][okd-gsg]
 
 This repository contains Cilium packaging for OpenShift, which is centred around [Operator Lifecycle Management APIs (OLM)][olm].
