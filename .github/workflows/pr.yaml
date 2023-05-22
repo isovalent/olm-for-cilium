@@ -4,7 +4,7 @@ on:
 
 jobs:
   lint:
-    if: github.repository == 'isovalent/cilium-olm' && github.event_name == 'pull_request'
+    if: github.repository == 'isovalent/olm-for-cilium' && github.event_name == 'pull_request'
     name: Lint Image Build Logic
     runs-on: ubuntu-20.04
     steps:
