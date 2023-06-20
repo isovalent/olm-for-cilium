@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Define version to be built and tested'
+        description: 'Define version to be built and tested (example: "1.13.4")'
         required: true
 
 jobs:
@@ -16,7 +16,9 @@ jobs:
       - id: set
         name: Set OLM Tag
         run: |
-          olm_tag=$(yq .spec.install.spec.deployments[0].spec.template.spec.containers[0].image bundles/cilium.v${{ github.event.inputs.version }}/manifests/cilium.clusterserviceversion.yaml | cut -d ':' -f 2)
+          VERSION="${{ github.event.inputs.version }}"
+          set -o pipefail
+          olm_tag=$(yq .spec.install.spec.deployments[0].spec.template.spec.containers[0].image bundles/cilium.v${VERSION#v}/manifests/cilium.clusterserviceversion.yaml | cut -d ':' -f 2)
           echo "::set-output name=OLM_TAG::${olm_tag}"
   build-and-publish:
     if: needs.set-olm-tag.outputs.olm-tag != ''
