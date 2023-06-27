@@ -99,18 +99,42 @@ EOF
 
 mkdir -p "${bundle_dir}"
 
-cat >> Makefile.releases << EOF
+get_append_line () {
+    local current="$1" line r releases smallest
 
-# Cilium v${cilium_version}
+    # Get all releases by parsing Makefile.releases
+    mapfile releases < <(sed -n 's/^# Cilium v\([0-9.]*\)$/\1/p' Makefile.releases)
+    for r in "${releases[@]}"; do
+        # Compare release numbers by sorting them and checking whether our new
+        # entry is the smallest
+        smallest="$(printf "%s\n%s\n" "${current}" "${r}" | sort -V | head -n1)"
+        if [[ "${smallest}" == "${current}" ]]; then
+            # If we've found a greater version number, we want to insert the
+            # new entry just before
+            line=$(grep -n "^# Cilium v${r}\$" Makefile.releases | cut -d: -f1)
+            # Go back three lines: we want the line above, and then we skip two
+            # blank lines
+            echo $((line - 3))
+            return
+        fi
+    done
+    # If no greater version number was found, append at the end of the file
+    wc -l Makefile.releases | cut -d' ' -f1
+}
 
-images.all: images.operator.v${cilium_version}
-
-images.operator.all: images.operator.v${cilium_version} generate.configs.v${cilium_version}
-generate.configs.all: generate.configs.v${cilium_version}
-
+line=$(get_append_line "$cilium_version")
+sed -i "${line} a \
+\\\n\
+\\n\
+# Cilium v${cilium_version}\\n\
+\\n\
+images.all: images.operator.v${cilium_version}\\n\
+\\n\
+images.operator.all: images.operator.v${cilium_version} generate.configs.v${cilium_version}\\n\
+generate.configs.all: generate.configs.v${cilium_version}\\n\
+\\n\
 images.operator.v${cilium_version} generate.configs.v${cilium_version}: cilium_version=${cilium_version}
-
-EOF
+" Makefile.releases
 
 template_dir="${operator_dir}/cilium/templates"
 
