@@ -103,7 +103,7 @@ get_append_line () {
     local current="$1" line r releases smallest
 
     # Get all releases by parsing Makefile.releases
-    mapfile releases < <(sed -n 's/^# Cilium v\([0-9.]*\)$/\1/p' Makefile.releases)
+    mapfile -t releases < <(sed -n 's/^# Cilium v\([0-9.]*\)$/\1/p' Makefile.releases)
     for r in "${releases[@]}"; do
         # Compare release numbers by sorting them and checking whether our new
         # entry is the smallest
