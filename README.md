@@ -3,8 +3,6 @@
 > **Note**
 > This repository is a fork of the original repository hosted at [cilium/cilium-olm](https://github.com/cilium/cilium-olm), which has been deprecated.
 
-> NOTE: this documentation is for Cilium maintainers, the user guide for OpenShift is part of [Cilium documentation][okd-gsg]
-
 This repository contains Cilium packaging for OpenShift, which is centred around [Operator Lifecycle Management APIs (OLM)][olm].
 
 ## Key Components
@@ -62,7 +60,6 @@ The metadata bundle image contains just YAML files and no software as such, howe
 [rhpc-projects]: https://connect.redhat.com/projects
 [GitHub Actions]: ../../actions/workflows/pr.yaml
 
-[okd-gsg]: https://docs.cilium.io/en/stable/installation/k8s-install-openshift-okd/
 [olm]: https://docs.openshift.com/container-platform/4.14/operators/understanding/olm/olm-understanding-olm.html
 [kuegen]: https://github.com/errordeveloper/kuegen
 
