@@ -22,11 +22,11 @@ The installer operator is based on RedHat's helm-operator, which was chosen for 
 
 The operator is configured using a [`CiliumConfig` CRD](config/crd/cilium.io_cilumconfigs.yaml). The operator watches a single `CiliumConfig` CR in `cilium` namespace. The CRD is a simple object that hold Helm values.
 
-Default CR specs for each release are sourced from top-level manifest (e.g. [`ciliumconfig.v1.10.yaml`](ciliumconfig.v1.10.yaml)), a copy is made for each release in `manifests/` (e.g. [`manifests/cilium.v1.9.6/cluster-network-07-cilium-ciliumconfig.yaml`](manifests/cilium.v1.9.6/cluster-network-07-cilium-ciliumconfig.yaml).
+Default CR specs for each release are sourced from top-level manifest (e.g. [`ciliumconfig.v1.14.yaml`](ciliumconfig.v1.14.yaml)), a copy is made for each release in `manifests/` (e.g. [`manifests/cilium.v1.14.3/cluster-network-07-cilium-ciliumconfig.yaml`](manifests/cilium.v1.14.3/cluster-network-07-cilium-ciliumconfig.yaml).
 
 ### Cofiguration source code
 
-Since configuration for OLM was fairly complex to manage in static YAML format, it was written in [CUE](http://cuelang.org/).
+Since configuration for OLM was fairly complex to manage in static YAML format, it was written in [CUE](https://cuelang.org/).
 CUE is not very easy to use on its own, so a simple opinionated utility called [`kuegen`][kuegen] is being used to execute CUE templates and write out YAML files.
 
 The CUE templates can be found in [`config/operator/`](config/operator/). `kuegen` is invoked with [a helper script](scripts/generate-configs.sh), which is typically driven by `make`, e.g. `make generate.configs.v1.9.6`.
@@ -46,7 +46,7 @@ For the purposes of certfication, the operator application image is accompanied 
 
 Image definitions for the operator application and the metadata bundle can be found under [`operator/`](operator) [`bundles/`](bundles). Images are mapped to Cilium releases.
 
-Images are built using [GitHub Actions][] and pushed to [quay.io/cilium/cilium-olm](http://quay.io/cilium/cilium-olm) and [quay.io/cilium/cilium-olm-metadata](http://quay.io/cilium/cilium-olm-metadata). [`imagine`](https://github.com/errordeveloper/imagine) utility is being used to drive the builds.
+Images are built using [GitHub Actions][] and pushed to [quay.io/cilium/cilium-olm](https://quay.io/cilium/cilium-olm) and [quay.io/cilium/cilium-olm-metadata](https://quay.io/cilium/cilium-olm-metadata). [`imagine`](https://github.com/errordeveloper/imagine) utility is being used to drive the builds.
 
 The metadata bundle image contains just YAML files and no software as such, however it's a crucial part of OLM and when it comes to certification it's what is being tested the most. It's possible to install the operator based on this image, however it's not something that is recommended for Cilium, as Cilium should be installed during cluster bootstrap as otherwise users will have to carry out live network migration.
 
@@ -54,16 +54,16 @@ The metadata bundle image contains just YAML files and no software as such, howe
 
 - [RedHat Partner Connect][] (maintainers will be able to obtain access)
 - [operator-courier](https://github.com/operator-framework/operator-courier) - tool used in certification tests
-- [operator-test-playbooks](https://github.com/redhat-operator-ecosystem/operator-test-playbooks) - ansible playbooks used to drive certication test (see [#37](https://github.com/cilium/cilium-olm/issues/37))
+- [operator-test-playbooks](https://github.com/redhat-openshift-ecosystem/operator-test-playbooks) - ansible playbooks used to drive certication test (see [#37](https://github.com/cilium/cilium-olm/issues/37))
 - [Cilium OLM (operator) in RedHat Catalog](https://catalog.redhat.com/software/containers/isovalent/cilium-olm/5ff7310e293738682042b1dd)
 - [Cilium OLM (bundle) in RedHat Catalog](https://catalog.redhat.com/software/containers/isovalent/cilium-olm-metadata/603fd17f69aea331dde395e4)
 
 [RedHat Partner Connect]: https://connect.redhat.com
 [rhpc-projects]: https://connect.redhat.com/projects
-[GitHub Actions]: ../../actions/workflows/ci.yaml
+[GitHub Actions]: ../../actions/workflows/pr.yaml
 
-[okd-gsg]: https://docs.cilium.io/en/v1.10/gettingstarted/k8s-install-openshift-okd
-[olm]: https://docs.openshift.com/container-platform/4.7/operators/understanding/olm/olm-understanding-olm.html
+[okd-gsg]: https://docs.cilium.io/en/stable/installation/k8s-install-openshift-okd/
+[olm]: https://docs.openshift.com/container-platform/4.14/operators/understanding/olm/olm-understanding-olm.html
 [kuegen]: https://github.com/errordeveloper/kuegen
 
 ## Common Workflows
@@ -83,24 +83,24 @@ All releases and release candidates should be added to this repo for testing, al
 To add a Cilium release, run:
 
 ```
-scripts/add-release.sh 1.10.0
+scripts/add-release.sh 1.14.3
 ```
 
 This will do the following:
 
-- create new dirs `{operator,manifests,bundles}/cilium.v1.10.0` populate these with generated configs
+- create new dirs `{operator,manifests,bundles}/cilium.v1.14.3` populate these with generated configs
 - download Helm chart tarball and unpack it to 
 - create a local commit that has all the changes that can be pushed to the repo
 
-Now push changes to a named branch that ends with the version number you are trying to publish (e.g. "pr/myghhandle/oss/v1.10.0").
+Now push changes to a named branch that ends with the version number you are trying to publish (e.g. "pr/myghhandle/oss/v1.14.3").
 This will create development images, which can be inspeted in the github actions output.
 
 Validate that the release works by [creating an Openshift cluster and installing the new operator](https://docs.cilium.io/en/latest/installation/k8s-install-openshift-okd/#k8s-install-openshift-okd), by modifying the OLM manifests to use the CI generated images.
 Also, make sure to copy the custom CiliumConfig to ensure that the K8s networking e2e tests will pass. For example,
-assuming that you are releasing `v1.12.0`:
+assuming that you are releasing `v1.14.3`:
 
 ```bash
-cp ciliumconfig.conformance.yaml manifests/cilium.v1.12.0/cluster-network-07-cilium-ciliumconfig.yaml
+cp ciliumconfig.conformance.yaml manifests/cilium.v1.14.3/cluster-network-07-cilium-ciliumconfig.yaml
 ```
 
 Run the Network Conformance tests [according to these instructions](https://redhat-connect.gitbook.io/openshift-badges/badges/container-network-interface-cni/workflow/running-the-cni-tests) to ensure that Cilium functions as expected. There are 3 exepected failures in these conformance tests. They are:
@@ -113,8 +113,8 @@ NetworkPolicy between server and client should ensure an IP overlapping both IPB
 Once these conformance tests are passed it is safe to assume that the generated manifests are working correctly.
 The branch PR can then be merged into master.
 
-Once the branch PR is merged into master, run [the publish action](https://github.com/cilium/cilium-olm/actions/workflows/publish.yaml) on the
-master branch, defining the version to be published ("1.10.0" for example).
+Once the branch PR is merged into master, run [the publish action](https://github.com/isovalent/olm-for-cilium/actions/workflows/publish.yaml) on the
+master branch, defining the version to be published ("1.14.3" for example).
 
 Once the action has completed successfully, you can now submit the image conformance tests to Redhat.
 For this you will need to access [RedHat Partner Connect][] registry and obtain credentials for logging
@@ -139,8 +139,8 @@ PFLT_DOCKERCONFIG=~/.docker/config.json preflight check container --pyxis-api-to
 
 Next, login to [Redhat Parnter Connect][] and click "Publish" on the image (once the vulnerability scanning is done).
 
-Once the image is published open a new PR in the [cilium/certified-operators](https://github.com/cilium/certified-operators), by adding the
-new manifests to the appropriately named new directory under `operators/cilium` (`operators/cilium/v1.10.0`, for example).
+Once the image is published open a new PR in the [isovalent/certified-operators-cilium](https://github.com/isovalent/certified-operators-cilium), by adding the
+new manifests to the appropriately named new directory under `operators/cilium` (`operators/cilium/v1.14.3`, for example).
 Before commiting your changes make sure to modify the `image` reference in the `manifests/cilium.clusterserviceversion.yaml` so that
 the sha256 tag of the image is used (rather than the semantic tag).
 
