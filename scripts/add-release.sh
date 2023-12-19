@@ -69,7 +69,7 @@ cat > "${operator_dir}/Dockerfile" << EOF
 # Copyright 2017-2021 Authors of Cilium
 # SPDX-License-Identifier: Apache-2.0
 
-FROM quay.io/operator-framework/helm-operator:v1.22
+FROM quay.io/operator-framework/helm-operator:v1.33
 
 # This make the build time-variant, but there is not easy
 # way around this yet, as the helm-operator image does
