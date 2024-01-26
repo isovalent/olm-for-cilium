@@ -92,6 +92,14 @@ _csv_annotations: {
 	"alm-examples":                                   json.Marshal(_alm_examples)
 	"operators.openshift.io/infrastructure-features": "[\"disconnected\"]"
 	"olm.skipRange":                                  ">=\(parameters.ciliumMajorMinor).0 <\(parameters.ciliumVersion)+x\(parameters.configVersionSuffix)"
+	"features.operators.openshift.io/disconnected":     "true"
+        "features.operators.openshift.io/fips-compliant":   "false"
+        "features.operators.openshift.io/proxy-aware":      "true"
+        "features.operators.openshift.io/tls-profiles":     "false"
+        "features.operators.openshift.io/token-auth-aws":   "false"
+        "features.operators.openshift.io/token-auth-azure": "false"
+        "features.operators.openshift.io/token-auth-gcp":   "false"
+        "features.operators.openshift.io/cni":              "true"
 }
 
 _logoString: """
