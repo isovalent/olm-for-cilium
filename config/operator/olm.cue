@@ -91,6 +91,7 @@ _csv_annotations: {
 	"alm-examples-metadata":                          json.Marshal(_alm_examples_metadata)
 	"alm-examples":                                   json.Marshal(_alm_examples)
 	"operators.openshift.io/infrastructure-features": "[\"disconnected\"]"
+	"olm.skipRange":                                  ">=\(parameters.ciliumMajorMinor).0 <\(parameters.ciliumVersion)+x\(parameters.configVersionSuffix)"
 }
 
 _logoString: """
