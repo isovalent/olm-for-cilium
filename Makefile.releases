@@ -702,3 +702,13 @@ images.operator.all: images.operator.v1.14.5 generate.configs.v1.14.5
 generate.configs.all: generate.configs.v1.14.5
 
 images.operator.v1.14.5 generate.configs.v1.14.5: cilium_version=1.14.5
+
+
+# Cilium v1.14.6
+
+images.all: images.operator.v1.14.6
+
+images.operator.all: images.operator.v1.14.6 generate.configs.v1.14.6
+generate.configs.all: generate.configs.v1.14.6
+
+images.operator.v1.14.6 generate.configs.v1.14.6: cilium_version=1.14.6
