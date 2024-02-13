@@ -23,7 +23,7 @@ spec:
     operator:
       clusterPoolIPv4PodCIDR: "10.128.0.0/14"
       clusterPoolIPv4MaskSize: "23"
-  nativeRoutingCIDR: "10.128.0.0/14"
+  ipv4NativeRoutingCIDR: "10.128.0.0/14"
   endpointRoutes: {enabled: true}
   kubeProxyReplacement: "probe"
   clusterHealthPort: 9940
