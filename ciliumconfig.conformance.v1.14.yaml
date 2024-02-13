@@ -24,7 +24,7 @@ spec:
       clusterPoolIPv4PodCIDRList:
         - "10.128.0.0/14"
       clusterPoolIPv4MaskSize: "23"
-  nativeRoutingCIDR: "10.128.0.0/14"
+  ipv4NativeRoutingCIDR: "10.128.0.0/14"
   endpointRoutes: {enabled: true}
   clusterHealthPort: 9940
   tunnelPort: 4789
