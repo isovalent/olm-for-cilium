@@ -171,10 +171,6 @@ _related_images: [
 	{
 		name: "nodeinit"
 		image: parameters.nodeInitImage
-	},
-	{
-		name: "clustermesh-etcd"
-		image: parameters.clustermeshEtcdImage
 	}
 ]
 
@@ -182,6 +178,15 @@ if parameters.hubbleUIProxyImage != "nothing" {
 	_related_images: _related_images + [{
 		name: "hubble-ui-proxy"
 		image: parameters.hubbleUIProxyImage
+	}]
+}
+
+// quay.io/coreos/etcd is not included in Cilium >= 1.15 Helm charts.
+// Ref: https://github.com/cilium/cilium/blob/v1.15.1/install/kubernetes/cilium/values.yaml
+if strings.HasPrefix(parameters.ciliumVersion, "1.12") || strings.HasPrefix(parameters.ciliumVersion, "1.13") || strings.HasPrefix(parameters.ciliumVersion, "1.14") {
+	_related_images: _related_images + [{
+		name: "clustermesh-etcd"
+		image: parameters.clustermeshEtcdImage
 	}]
 }
 
