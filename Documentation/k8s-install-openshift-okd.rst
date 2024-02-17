@@ -125,7 +125,7 @@ Next, obtain Cilium manifests for the target installation version from the
 .. parsed-literal::
 
    cilium_version="replace_me"
-   git_dir="/tmp/cilium-olm"
+   git_dir="/tmp/olm-for-cilium"
 
    git clone https://github.com/isovalent/olm-for-cilium.git ${git_dir}
    cp ${git_dir}/manifests/cilium.v${cilium_version}/* "${CLUSTER_NAME}/manifests"
@@ -145,6 +145,13 @@ It is also possible to update Helm values once the cluster is running by
 changing the ``CiliumConfig`` object, e.g. with ``kubectl edit ciliumconfig -n
 cilium cilium``. You may need to restart the Cilium agent pods for certain
 options to take effect.
+
+.. note::
+
+   OpenShift installations use a different default port than Cilium for VXLAN: UDP 4789 (IANA) instead of UDP 8472 (Linux).
+   Low range ports are also often blocked on OpenShift clusters. The port for cluster health needs to be open or
+   configured to a higher range, e.g. ``clusterHealthPort: 9940``.
+   The configuration used for conformance tests in isovalent/olm-for-cilium can be leveraged for a quick setup.
 
 Create the cluster:
 
