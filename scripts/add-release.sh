@@ -62,7 +62,6 @@ cat > "${operator_dir}/watches.yaml" << EOF
     hubble.ui.proxy.image.override: \$RELATED_IMAGE_HUBBLE_UI_PROXY
     etcd.image.override: \$RELATED_IMAGE_ETCD_OPERATOR
     nodeinit.image.override: \$RELATED_IMAGE_NODEINIT
-    clustermesh.apiserver.etcd.image.override: \$RELATED_IMAGE_CLUSTERMESH_ETCD
 EOF
 
 cat > "${operator_dir}/Dockerfile" << EOF
