@@ -174,14 +174,14 @@ _related_images: [
 	}
 ]
 
-// quay.io/coreos/etcd is not included in Cilium >= 1.15 Helm charts.
-// Ref: https://github.com/cilium/cilium/blob/v1.15.1/install/kubernetes/cilium/values.yaml
-if strings.HasPrefix(parameters.ciliumVersion, "1.12") || strings.HasPrefix(parameters.ciliumVersion, "1.13") || strings.HasPrefix(parameters.ciliumVersion, "1.14") {
-	_related_images: _related_images + [{
-		name: "clustermesh-etcd"
-		image: parameters.clustermeshEtcdImage
-	}]
-}
+_extra_related_images: [
+	if parameters.clustermeshEtcdImage != "nothing" {
+		{
+			name: "clustermesh-etcd"
+			image: parameters.clustermeshEtcdImage
+		},
+	},
+]
 
 #CSVWorkloadTemplate: {
 	apiVersion: "operators.coreos.com/v1alpha1"
@@ -195,7 +195,7 @@ if strings.HasPrefix(parameters.ciliumVersion, "1.12") || strings.HasPrefix(para
             if parameters.replaces != "nothing" {
 		replaces: parameters.replaces
              }
-		relatedImages: _related_images
+		relatedImages: _related_images + _extra_related_images
 		apiservicedefinitions: {}
 		customresourcedefinitions: owned: [{
 			name:    "ciliumconfigs.cilium.io"

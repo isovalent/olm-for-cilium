@@ -57,11 +57,16 @@ _related_images_env_vars: [{
 	{
 		name: "RELATED_IMAGE_NODEINIT"
 		value: parameters.nodeInitImage
-	},
-	{
-		name: "RELATED_IMAGE_CLUSTERMESH_ETCD"
-		value: parameters.clustermeshEtcdImage
 	}]
+
+_extra_related_images_env_vars: [
+	if parameters.clustermeshEtcdImage != "nothing" {
+		{
+			name: "RELATED_IMAGE_CLUSTERMESH_ETCD"
+			value: parameters.clustermeshEtcdImage
+		},
+	},
+]
 
 _workloadSpec: {
 	template: {
@@ -86,7 +91,7 @@ _workloadSpec: {
 				env: [{
 					name: "WATCH_NAMESPACE"
 					valueFrom: fieldRef: fieldPath: "metadata.namespace"
-				}] + _related_images_env_vars
+				}] + _related_images_env_vars + _extra_related_images_env_vars
 				volumeMounts: [{
 					name:      "tmp"
 					mountPath: "/tmp"
