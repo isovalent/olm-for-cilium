@@ -57,7 +57,12 @@ hubble_ui_be_image="$(get_image "$(yq e '.hubble.ui.backend.image.repository' "$
 hubble_ui_fe_image="$(get_image "$(yq e '.hubble.ui.frontend.image.repository' "$values_file")" "$(yq e '.hubble.ui.frontend.image.tag' "$values_file")")"
 etcd_operator_image="$(get_image "$(yq e '.etcd.image.repository' "$values_file")" "$(yq e '.etcd.image.tag' "$values_file")")"
 nodeinit_image="$(get_image "$(yq e '.nodeinit.image.repository' "$values_file")" "$(yq e '.nodeinit.image.tag' "$values_file")")"
-clustermesh_etcd_image="$(get_image "$(yq e '.clustermesh.apiserver.etcd.image.repository' "$values_file")" "$(yq e '.clustermesh.apiserver.etcd.image.tag' "$values_file")")"
+# quay.io/coreos/etcd is not included in Cilium >= 1.15 Helm charts.
+# Ref: https://github.com/cilium/cilium/blob/v1.15.1/install/kubernetes/cilium/values.yaml
+cilium_minor_number=$(cut -d '.' -f 2 <<< "$cilium_version")
+if [[ $cilium_minor_number -lt 15 ]]; then
+  clustermesh_etcd_image="$(get_image "$(yq e '.clustermesh.apiserver.etcd.image.repository' "$values_file")" "$(yq e '.clustermesh.apiserver.etcd.image.tag' "$values_file")")"
+fi
 
 cilium_major_minor="$(echo "${cilium_version}" | cut -d . -f -2)"
 # to not make 1.13.0 as previous release cause failure
@@ -99,7 +104,7 @@ instances: [
       hubbleUIFrontendImage: "${hubble_ui_fe_image}"
       etcdOperatorImage: "${etcd_operator_image}"
       nodeInitImage: "${nodeinit_image}"
-      clustermeshEtcdImage: "${clustermesh_etcd_image}"
+      clustermeshEtcdImage: "${clustermesh_etcd_image:-nothing}"
     }
   },
   {
@@ -123,7 +128,7 @@ instances: [
       hubbleUIFrontendImage: "${hubble_ui_fe_image}"
       etcdOperatorImage: "${etcd_operator_image}"
       nodeInitImage: "${nodeinit_image}"
-      clustermeshEtcdImage: "${clustermesh_etcd_image}"
+      clustermeshEtcdImage: "${clustermesh_etcd_image:-nothing}"
     }
   },
 ]
