@@ -59,7 +59,6 @@ cat > "${operator_dir}/watches.yaml" << EOF
     certgen.image.override: \$RELATED_IMAGE_CERTGEN
     hubble.ui.backend.image.override: \$RELATED_IMAGE_HUBBLE_UI_BE
     hubble.ui.frontend.image.override: \$RELATED_IMAGE_HUBBLE_UI_FE
-    hubble.ui.proxy.image.override: \$RELATED_IMAGE_HUBBLE_UI_PROXY
     etcd.image.override: \$RELATED_IMAGE_ETCD_OPERATOR
     nodeinit.image.override: \$RELATED_IMAGE_NODEINIT
     clustermesh.apiserver.etcd.image.override: \$RELATED_IMAGE_CLUSTERMESH_ETCD
@@ -169,7 +168,6 @@ if [[ ${cilium_version} == 1.9.* ]]; then
     # hubble-ui
     sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.frontend.*$|\1image: "{{ .Values.hubble.ui.frontend.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
     sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.backend.*$|\1image: "{{ .Values.hubble.ui.backend.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
-    sed -i 's|^\([[:blank:]]*\)image: "{{ \.Values\.hubble\.ui\.proxy.*$|\1image: "{{ .Values.hubble.ui.proxy.image.override }}"|' "${template_dir}/hubble-ui-deployment.yaml"
 fi
 
 git add Makefile.releases "${operator_dir}" "${bundle_dir}"

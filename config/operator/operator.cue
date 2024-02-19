@@ -63,13 +63,6 @@ _related_images_env_vars: [{
 		value: parameters.clustermeshEtcdImage
 	}]
 
-if parameters.hubbleUIProxyImage != "nothing" {
-	_related_images_env_vars: _related_images_env_vars + [{
-		name: "RELATED_IMAGE_HUBBLE_UI_PROXY"
-		value: parameters.hubbleUIProxyImage
-	}]
-}
-
 _workloadSpec: {
 	template: {
 		metadata: labels: _commonMetadata.labels
@@ -256,7 +249,6 @@ _core_items: namespace + [
         certgenImage:          string | *""
         hubbleUIBackendImage:  string | *""
         hubbleUIFrontendImage: string | *""
-        hubbleUIProxyImage:    string | *""
         etcdOperatorImage:     string | *""
         nodeInitImage:         string | *""
         clustermeshEtcdImage:  string | *""
