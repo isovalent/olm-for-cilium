@@ -151,6 +151,8 @@ _ciliumClusterRules: [
 			"create",
 			"get",
 			"update",
+			"list",
+			"delete",
 		]
 	},
 	{
