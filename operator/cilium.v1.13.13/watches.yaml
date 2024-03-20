@@ -1,0 +1,19 @@
+# Copyright 2017-2021 Authors of Cilium
+# SPDX-License-Identifier: Apache-2.0
+
+- group: cilium.io
+  version: v1alpha1
+  kind: CiliumConfig
+  chart: helm-charts/cilium
+  overrideValues:
+    image.override: $RELATED_IMAGE_CILIUM
+    hubble.relay.image.override: $RELATED_IMAGE_HUBBLE_RELAY
+    operator.image.override: $RELATED_IMAGE_CILIUM_OPERATOR
+    preflight.image.override: $RELATED_IMAGE_PREFLIGHT
+    clustermesh.apiserver.image.override: $RELATED_IMAGE_CLUSTERMESH
+    certgen.image.override: $RELATED_IMAGE_CERTGEN
+    hubble.ui.backend.image.override: $RELATED_IMAGE_HUBBLE_UI_BE
+    hubble.ui.frontend.image.override: $RELATED_IMAGE_HUBBLE_UI_FE
+    etcd.image.override: $RELATED_IMAGE_ETCD_OPERATOR
+    nodeinit.image.override: $RELATED_IMAGE_NODEINIT
+    clustermesh.apiserver.etcd.image.override: $RELATED_IMAGE_CLUSTERMESH_ETCD
