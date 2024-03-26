@@ -113,31 +113,12 @@ The branch PR can then be merged into master.
 Once the branch PR is merged into master, run [the publish action](https://github.com/isovalent/olm-for-cilium/actions/workflows/publish.yaml) on the
 master branch, defining the version to be published ("1.14.3" for example).
 
-Once the action has completed successfully, you can now submit the image conformance tests to Redhat.
-For this you will need to access [RedHat Partner Connect][] registry and obtain credentials for logging
-into the regsitry and setting the preflight API key.
+Once the action has completed successfully, the image will now be certified by RedHat registry. 
 
-Export the following environment variables using the credentials from RedHat Partner Connect:
-
-- `export RHPC_PASSWORD_FOR_OLM_OPERATOR_IMAGE="_____"`
-- `export RHCP_PREFLIGHT_API_KEY="_____"`
-
-Next, login to the registry:
-
-```sh
-podman login -u unused scan.connect.redhat.com -p $RHPC_PASSWORD_FOR_OLM_OPERATOR_IMAGE
-```
-
-Next, run the preflight checks on the image:
-
-```sh
-PFLT_DOCKERCONFIG=~/.docker/config.json preflight check container --pyxis-api-token=$RHCP_PREFLIGHT_API_KEY --submit --certification-project-id=ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b scan.connect.redhat.com/ospid-104ec1da-384c-4d7c-bd27-9dbfd8377f5b/cilium-olm:v1.10.0
-```
-
-Next, login to [Redhat Parnter Connect][] and click "Publish" on the image (once the vulnerability scanning is done).
+Once the certification finishes, login to [Redhat Parnter Connect][] and click "Publish" on the image (once the vulnerability scanning is done).
 
 Once the image is published open a new PR in the [isovalent/certified-operators-cilium](https://github.com/isovalent/certified-operators-cilium), by adding the
-new manifests to the appropriately named new directory under `operators/cilium` (`operators/cilium/v1.14.3`, for example).
+new manifests to the appropriately named new directory under `operators/cilium` (`operators/cilium/1.14.3`, for example).
 Before commiting your changes make sure to modify the `image` reference in the `manifests/cilium.clusterserviceversion.yaml` so that
 the sha256 tag of the image is used (rather than the semantic tag).
 
